@@ -23,7 +23,7 @@ echo "Attempting to build $project for OS X"
 	-quit
 
 echo "Attempting to build $project for Linux"
-/Applications/Unity/Unity.app/Contents/MacOS/Unity 
+/Applications/Unity/Unity.app/Contents/MacOS/Unity \
 	-batchmode \
 	-nographics \
 	-silent-crashes \
