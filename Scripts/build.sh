@@ -8,7 +8,7 @@ echo "Attempting to build $project for Windows"
 	-nographics \
 	-silent-crashes \
 	-logFile $(pwd)/unity.log \
-	-projectPath "$(pwd)" \
+	-projectPath "$(pwd)/$project" \
 	-buildWindowsPlayer "$(pwd)/Build/windows/$project.exe" \
 	-quit
 
@@ -18,7 +18,7 @@ echo "Attempting to build $project for Windows"
 	-nographics \
 	-silent-crashes \
 	-logFile $(pwd)/unity.log \
-	-projectPath "$(pwd)" \
+	-projectPath "$(pwd)/$project" \
 	-buildOSXUniversalPlayer "$(pwd)/Build/osx/$project.app" \
 	-quit
 
@@ -29,7 +29,7 @@ echo "Attempting to build $project for Linux"
 	-silent-crashes \
 	-logFile $(pwd)/unity.log \
 	-projectPath "$(pwd)" \
-	-buildLinuxUniversalPlayer "$(pwd)/Build/linux/$project.x86_64" \
+	-buildLinuxUniversalPlayer "$(pwd)/Build/linux/$project.exe" \
 	-quit
 '
 
