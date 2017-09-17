@@ -1,0 +1,19 @@
+language: objective-c
+osx_image: xcode8.1
+rvm:
+- 2.2
+before_install:
+- chmod a+x ./Scripts/install.sh
+- chmod a+x ./Scripts/build.sh
+install:
+- ./Scripts/install.sh
+script:
+- ./Scripts/build.sh
+deploy:
+  provider: s3
+  access_key_id: $ACCESS_KEY_ID
+  secret_access_key: $ACCESS_KEY
+  bucket: augmentedaudio-unity
+  local-dir: Build
+  upload-dir: dev/build
+  skip_cleanup: true
