@@ -40,3 +40,9 @@ echo "Attempting to zip builds"
 zip -r $(pwd)/Build/linux.zip $(pwd)/Build/linux/
 #zip -r $(pwd)/Build/mac.zip $(pwd)/Build/osx/
 zip -r $(pwd)/Build/windows.zip $(pwd)/Build/windows/
+
+echo "Removing unziped build files"
+rm -rf $(pwd)/Build/linux
+rm -rf $(pwd)/Build/windows
+
+echo "Build done"
