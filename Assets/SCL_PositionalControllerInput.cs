@@ -94,6 +94,10 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	
 	private void create_myObj(float[] pos) {
 		int ID = getUnusedID();
+		if(ID == -1) {
+			Debug.LogError("Limit of maxObjects reached; cannot create object. Aborting");
+			return;
+		}
 		cubeArray[ID].valid = true;
 		cubeArray[ID].position = pos;
 		cubeArray[ID].cFlag = true;				//set the "create" flag so FixedUpdate() will create it for us
