@@ -14,6 +14,9 @@ public class SCL_SocketClientThreadHolder
 	protected readonly Thread thread;
 	protected readonly SCL_ClientSocketHandler handler;
 
+	public static GameObject myMethod() {
+		return GameObject.CreatePrimitive(PrimitiveType.Cube);
+	}
 	public Thread Thread {
 		get {
 			return this.thread;

@@ -49,6 +49,7 @@ public class SCL_ClientSocketHandler {
 						this.socketDelegate.msgParse(this, tokens[i]);
 					}
 					dataBuffer = new StringBuilder();	//clear dataBuffer before next read
+					read_length = 0;
 				}
 			}
 		} catch (ThreadAbortException e) {

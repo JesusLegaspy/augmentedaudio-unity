@@ -6,27 +6,75 @@ using System.Globalization;
 using System.Text;
 
 public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHandlerDelegate {
-	public struct myObj {
-		public bool valid;
-		public GameObject cubeObj;		//GameObject object that is physically placed in the Unity Engine
-		public float[] position;		//3-element array containing position
-	};
 	public readonly static int maxObjects = 10;
-	private static myObj[] cubeArray = { new myObj(), new myObj(), new myObj(), new myObj(), new myObj(),
-											new myObj(), new myObj(), new myObj(), new myObj(), new myObj()};
-	
 	private readonly object positionLock = new object();
 	private Vector3 position = new Vector3();
-
 	private SCL_SocketServer socketServer;
+	private static myObj[] cubeArray = { new myObj(), new myObj(), new myObj(), new myObj(), new myObj(),
+										new myObj(), new myObj(), new myObj(), new myObj(), new myObj()};
 	
+	public struct myObj {
+		public bool valid;
+		public GameObject cubeObj;
+		public float[] position;				
+		public bool cFlag;
+		public bool dFlag;
+	};
+	
+	//Initialization
+	void Start () {
+		for(int i = 0; i < maxObjects; i++) {
+			myObj q = cubeArray[i];
+			q.valid = false;
+			q.cubeObj = null;					//GameObject object that is physically placed in the Unity Engine
+			q.cFlag = false;					//"create" flag for FixedUpdate() method
+			q.dFlag = false;					//"destroy" flag for FixedUpdate() method
+		}
+		SCL_IClientSocketHandlerDelegate socketDelegate = this;
+		int maxClients = 1;
+		string separatorString = "+";
+		int portNumber = 13000;
+		Encoding encoding = Encoding.UTF8;
+		this.socketServer = new SCL_SocketServer(socketDelegate, maxClients, separatorString, portNumber, encoding);
+		this.socketServer.StartListeningForConnections();
+		Debug.Log (String.Format (
+			"Started socket server at {0} on port {1}", 
+			this.socketServer.LocalEndPoint.Address, this.socketServer.PortNumber));
+	}
+
+	//Periodically executed by Unity. This program uses it to check
+	//  flags to create & destroy objects when needed.
+	void FixedUpdate() {
+		//float log = Time.deltaTime;
+		for(int i = 0; i < maxObjects; i++) {
+			myObj q = cubeArray[i];
+			if(true == q.cFlag) {
+				q.cFlag = false;		//finished, no longer needs to be created
+				Debug.LogError("Handler entered.");
+				q.cubeObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				q.cubeObj.transform.position = new Vector3(q.position[0], q.position[1], q.position[2]);		//update position of object in engine
+			}
+			if(true == q.dFlag) {
+				q.dFlag = false;
+				Destroy(q.cubeObj);
+				cubeArray[i] = new myObj();		//create new object, leaving old reference to garbage collector
+			}
+		}
+	}
+	
+	//Executed upon application exit
+	void OnApplicationQuit() {
+		Debug.Log ("Cleaning up socket server");
+		this.socketServer.Cleanup();
+		this.socketServer = null;
+	}
+	
+	//-------------------------------------------------------------------------------------//
+
 	public int getUnusedID() {
-		int i = 0; 
-		while(i < maxObjects) {
+		for(int i = 0; i < maxObjects; i++)
 			if(false == cubeArray[i].valid)
 				return i;
-			i++;
-		}
 		return -1;		//all 10 objects in use
 	}
 	
@@ -34,50 +82,19 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		return cubeArray[ID];
 	}
 	
-	//used to update or add object; does not check for overwrite.
-	private void update_myObj (myObj input, int ID) {
-		cubeArray[ID] = input;
+	private void create_myObj(float[] pos) {
+		myObj q = new myObj();
+		q.valid = true;
+		q.position = pos;
+		q.cFlag = true;				//set the "create" flag so FixedUpdate() will create it for us
+		int ID = getUnusedID();
+		cubeArray[ID] = q;
+		//update_myObj(q, getUnusedID());
 	}
 	
 	private void destroy_myObj(int ID) {
 		myObj dest = cubeArray[ID];
-		dest.valid = false;
-		Destroy(dest.cubeObj);
-	}
-	// Use this for initialization
-	void Start () {
-		for(int i = 0; i < maxObjects; i++) {
-			//myObj init = new myObj();
-			myObj init = cubeArray[i];
-			init.valid = false;
-			//this.update_myObj(init, i);
-		}
-		SCL_IClientSocketHandlerDelegate socketDelegate = this;
-		int maxClients = 1;
-		string separatorString = "+";
-		int portNumber = 13000;
-		Encoding encoding = Encoding.UTF8;
-
-		this.socketServer = new SCL_SocketServer(
-			socketDelegate, maxClients, separatorString, portNumber, encoding);
-
-		this.socketServer.StartListeningForConnections();
-
-		Debug.Log (String.Format (
-			"Started socket server at {0} on port {1}", 
-			this.socketServer.LocalEndPoint.Address, this.socketServer.PortNumber));
-	}
-
-	void OnApplicationQuit() {
-		Debug.Log ("Cleaning up socket server");
-		this.socketServer.Cleanup();
-		this.socketServer = null;
-	}
-
-	void FixedUpdate() {
-		for(int i = 0; i < maxObjects; i++)
-			if(true == cubeArray[i].valid)
-				cubeArray[i].cubeObj.transform.position = this.GetPositionValue();			
+		dest.dFlag = true;		//set the flag and let the FixedUpdate() method handle destruction.
 	}
 
 	// this delegate method will be called on another thread, so use locks for synchronization
@@ -110,7 +127,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				Debug.LogError ("Invalid number format in input: " + e);
 			}
 		} else 
-			Debug.LogError ("Too many coordinates entered in command: " + input);
+			Debug.LogError ("Improper number of coordinates entered in command: " + input);
 		return retval;
 	}
 	
@@ -121,15 +138,8 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		string cmd = input.Substring(0, 1);
 		switch (cmd) {
 			case "C": {
-				GameObject newGO = GameObject.CreatePrimitive(PrimitiveType.Cube);;
 				float[] pos = coordsToFloats(input);
-				Instantiate(newGO, new Vector3(pos[0], pos[1], pos[2]), Quaternion.identity);
-				
-				myObj q = new myObj();
-				q.valid = true;
-				q.cubeObj = newGO;
-				q.position = pos;
-				update_myObj(q, getUnusedID());
+				create_myObj(pos);
 				break;
 			} case "D": {
 				int ID = -1;
