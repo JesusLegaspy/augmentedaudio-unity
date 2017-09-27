@@ -23,12 +23,11 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	//Initialization
 	void Start () {
 		for(int i = 0; i < maxObjects; i++) {
-			myObj q = cubeArray[i];
-			q.valid = false;
-			q.cubeObj = null;					//GameObject object that is physically placed in the Unity Engine
-			q.cFlag = false;					//"create" flag for FixedUpdate() method
-			q.dFlag = false;					//"destroy" flag for FixedUpdate() method
-			q.mFlag = false;					//"move" flag for FixedUpdate() method
+			cubeArray[i].valid = false;
+			cubeArray[i].cubeObj = null;					//GameObject object that is physically placed in the Unity Engine
+			cubeArray[i].cFlag = false;					//"create" flag for FixedUpdate() method
+			cubeArray[i].dFlag = false;					//"destroy" flag for FixedUpdate() method
+			cubeArray[i].mFlag = false;					//"move" flag for FixedUpdate() method
 		}
 		SCL_IClientSocketHandlerDelegate socketDelegate = this;
 		int maxClients = 1;
@@ -46,6 +45,9 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	//  flags to create & destroy objects when needed.
 	void FixedUpdate() {
 		for(int i = 0; i < maxObjects; i++) {
+			//First check that cubeArray[i] is valid before trying to read from it
+			if(false == cubeArray[i].valid)
+				continue;
 			bool internalmove = false;		//prevents "move" message from printing when object is created
 			if(true == cubeArray[i].cFlag) {
 				cubeArray[i].cubeObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -64,6 +66,8 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				cubeArray[i].mFlag = false;
 				cubeArray[i].cubeObj.transform.position = new Vector3(cubeArray[i].position[0],		//update position of object in engine
 													cubeArray[i].position[1], cubeArray[i].position[2]);
+				//If the object was just created, do not display a "Move successful" log,
+				//  as the user never requested one.
 				if(false == internalmove)
 					Debug.Log("Item " + i + " successfully moved.");
 			}

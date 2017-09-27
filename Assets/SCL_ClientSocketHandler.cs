@@ -44,6 +44,8 @@ public class SCL_ClientSocketHandler {
 				if(read_length > 0) {
 					dataBuffer.Append(this.encoding.GetString(read_buffer, 0, read_length));
 					string data = dataBuffer.ToString();
+					if("quit" == data.ToLower())
+						break;
 					string [] tokens = data.Split(this.separatorSequenceChars);
 					for(int i = 0; i < tokens.Length; i++) {
 						this.socketDelegate.msgParse(this, tokens[i]);
