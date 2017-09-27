@@ -8,8 +8,7 @@ using System.Text;
 public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHandlerDelegate {
 	public readonly static int maxObjects = 10;
 	private SCL_SocketServer socketServer;
-	private static myObj[] cubeArray = { new myObj(), new myObj(), new myObj(), new myObj(), new myObj(),
-										new myObj(), new myObj(), new myObj(), new myObj(), new myObj()};
+	private static myObj[] cubeArray = new myObj[maxObjects];
 	
 	public struct myObj {
 		public bool valid;
@@ -24,7 +23,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	void Start () {
 		for(int i = 0; i < maxObjects; i++) {
 			cubeArray[i].valid = false;
-			cubeArray[i].cubeObj = null;					//GameObject object that is physically placed in the Unity Engine
+			cubeArray[i].cubeObj = null;				//GameObject object that is physically placed in the Unity Engine
 			cubeArray[i].cFlag = false;					//"create" flag for FixedUpdate() method
 			cubeArray[i].dFlag = false;					//"destroy" flag for FixedUpdate() method
 			cubeArray[i].mFlag = false;					//"move" flag for FixedUpdate() method
@@ -48,7 +47,8 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 			//First check that cubeArray[i] is valid before trying to read from it
 			if(false == cubeArray[i].valid)
 				continue;
-			bool internalmove = false;		//prevents "move" message from printing when object is created
+			bool internalmove = false;			//prevents "move" message from printing when object is created
+			
 			if(true == cubeArray[i].cFlag) {
 				cubeArray[i].cubeObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				cubeArray[i].mFlag = true;		//set flag so the if statement below will be entered, updating the position
@@ -56,12 +56,14 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				cubeArray[i].cFlag = false;		//finished, no longer needs to be created
 				Debug.Log("Success. The ID of the new object is " + i + ".");
 			}
+			
 			if(true == cubeArray[i].dFlag) {
 				cubeArray[i].dFlag = false;
 				Destroy(cubeArray[i].cubeObj);
 				cubeArray[i].valid = false;
 				Debug.Log("Item " + i + " successfully destroyed.");
 			}
+			
 			if(true == cubeArray[i].mFlag) {
 				cubeArray[i].mFlag = false;
 				cubeArray[i].cubeObj.transform.position = new Vector3(cubeArray[i].position[0],		//update position of object in engine
