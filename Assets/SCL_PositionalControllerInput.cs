@@ -18,6 +18,19 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		public bool dFlag;
 		public bool mFlag;
 	};
+
+    public void addSound(GameObject obj)
+    {
+        AudioSource bell = obj.AddComponent<AudioSource>();
+        bell.clip = Resources.Load("bell") as AudioClip;
+        bell.loop = true;
+        bell.spatialize = true;
+        bell.spatialBlend = 1.0f;
+        bell.rolloffMode = AudioRolloffMode.Logarithmic;
+        bell.maxDistance = 150;
+        bell.minDistance = 1;
+        bell.playOnAwake = true;
+    }
 	
 	//Initialization
 	void Start () {
@@ -55,7 +68,12 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				internalmove = true;
 				cubeArray[i].cFlag = false;		//finished, no longer needs to be created
 				Debug.Log("Success. The ID of the new object is " + i + ".");
-			}
+
+                //script below is for adding sound and getting distCal to work
+                cubeArray[i].cubeObj.tag = "Sound";
+                addSound(cubeArray[i].cubeObj);
+
+            }
 			
 			if(true == cubeArray[i].dFlag) {
 				cubeArray[i].dFlag = false;
