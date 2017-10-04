@@ -26,7 +26,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
         obj.AddComponent<SuperpoweredSpatializer>();
         AudioSource bell = obj.AddComponent<AudioSource>();
         AudioMixer master = Resources.Load("spatializerreverb") as AudioMixer;
-        bell.clip = AssetDatabase.LoadAssetAtPath("Assets/bell.wav") as AudioClip;
+        bell.clip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/bell.wav", typeof(AudioClip));
 
         bell.loop = true;
         bell.spatialize = true;
