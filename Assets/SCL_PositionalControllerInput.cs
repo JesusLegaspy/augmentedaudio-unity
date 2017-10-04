@@ -20,24 +20,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		public bool dFlag;
 		public bool mFlag;
 	};
-
-    public void addSound(GameObject obj)
-    {
-        obj.AddComponent<SuperpoweredSpatializer>();
-        AudioSource bell = obj.AddComponent<AudioSource>();
-        AudioMixer master = Resources.Load("spatializerreverb") as AudioMixer;
-        bell.clip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/bell.wav", typeof(AudioClip));
-
-        bell.loop = true;
-        bell.spatialize = true;
-        bell.spatialBlend = 1.0f;
-        bell.rolloffMode = AudioRolloffMode.Logarithmic;
-        bell.maxDistance = 150;
-        bell.minDistance = 1;
-        bell.outputAudioMixerGroup = master.outputAudioMixerGroup;
-        bell.playOnAwake = true;
-
-    }
+		
 	
 	//Initialization
 	void Start () {
@@ -78,7 +61,8 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 
                 //script below is for adding sound and getting distCal to work
                 cubeArray[i].cubeObj.tag = "Sound";
-                addSound(cubeArray[i].cubeObj);
+				//plz script does the magic boiiiiz
+				cubeArray [i].cubeObj.AddComponent<plz> ();
 
             }
 			
