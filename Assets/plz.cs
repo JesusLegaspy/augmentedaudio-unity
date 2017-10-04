@@ -20,7 +20,7 @@ public class plz : MonoBehaviour {
 		AudioMixer master = (AudioMixer)AssetDatabase.LoadAssetAtPath("Assets/spatializerreverb.mixer", typeof(AudioMixer));
 		voice.outputAudioMixerGroup = master.FindMatchingGroups ("Master") [0];
 		AudioClip speech;
-		speech = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/bell.wav", typeof(AudioClip));
+		speech = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/speech.wav", typeof(AudioClip));
 		voice.clip = speech;
 	
 		voice.loop = true;
