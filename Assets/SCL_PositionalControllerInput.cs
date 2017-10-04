@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Globalization;
 using System.Text;
+using UnityEngine.Audio;
 
 public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHandlerDelegate {
 	public readonly static int maxObjects = 10;
@@ -21,15 +22,20 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 
     public void addSound(GameObject obj)
     {
+        obj.AddComponent<SuperpoweredSpatializer>();
         AudioSource bell = obj.AddComponent<AudioSource>();
+        AudioMixer master = Resources.Load("spatializerreverb") as AudioMixer;
         bell.clip = Resources.Load("bell") as AudioClip;
+
         bell.loop = true;
         bell.spatialize = true;
         bell.spatialBlend = 1.0f;
         bell.rolloffMode = AudioRolloffMode.Logarithmic;
         bell.maxDistance = 150;
         bell.minDistance = 1;
+        bell.outputAudioMixerGroup = master.outputAudioMixerGroup;
         bell.playOnAwake = true;
+
     }
 	
 	//Initialization
