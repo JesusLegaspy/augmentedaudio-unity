@@ -206,7 +206,7 @@ artifacts/
 *_p.c
 *_i.h
 *.ilk
-*.meta
+#*.meta #interferes with Unity meta data files
 *.obj
 *.pch
 *.pgc

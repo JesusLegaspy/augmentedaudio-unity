@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Globalization;
 using System.Text;
-using UnityEngine.Audio;
-using UnityEditor;
 
 public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHandlerDelegate {
 	public readonly static int maxObjects = 10;
