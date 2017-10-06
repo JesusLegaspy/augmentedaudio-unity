@@ -1,0 +1,230 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: spatializerreverb
+  m_OutputGroup: {fileID: 0}
+  m_MasterGroup: {fileID: 24300001}
+  m_Snapshots:
+  - {fileID: 24500003}
+  m_StartSnapshot: {fileID: 24500003}
+  m_SuspendThreshold: 20
+  m_EnableSuspend: 1
+  m_UpdateMode: 0
+  m_ExposedParameters:
+  - guid: 08cc855fa057816469ba749b2a754b63
+    name: masterMixer
+  m_AudioMixerGroupViews:
+  - guids:
+    - 0995714d40d7b574bb4cc2d9583216d5
+    - 50101feee1f09ea4fb59d3903cfde2e1
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 24500003}
+--- !u!243 &24300001
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 0995714d40d7b574bb4cc2d9583216d5
+  m_Children:
+  - {fileID: 24391856}
+  m_Volume: 08cc855fa057816469ba749b2a754b63
+  m_Pitch: 27e1e9ba54f791345b231cd8607c0884
+  m_Effects:
+  - {fileID: 24400002}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!243 &24391856
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Reverb
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 50101feee1f09ea4fb59d3903cfde2e1
+  m_Children: []
+  m_Volume: 28fa4dde94216d64e93a75080674fb30
+  m_Pitch: 6b24ef3c1230ef0439a7bc29be4b0a06
+  m_Effects:
+  - {fileID: 24465894}
+  - {fileID: 24492446}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400002
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: 884af43f41543c94ea173400cdf5f77c
+  m_EffectName: Attenuation
+  m_MixLevel: f2dbd338a2811fb43994ba23bc5b4226
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &24465894
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: 0f5e1154a37e04cd98ed0824ce3e2e50
+  m_EffectName: Superpowered Spatializer Reverb
+  m_MixLevel: 5d8ac54f572894292aa245b859d80a63
+  m_Parameters:
+  - m_ParameterName: Delay Time
+    m_GUID: 9ffcb65b6c595480b9c5a34fc7adafe5
+  - m_ParameterName: Diffusion
+    m_GUID: 7f993b546521347bdb03f012bca32a07
+  - m_ParameterName: Room Size
+    m_GUID: 409e4ba2dfb1f48cdbd8e57c3b4dfd5c
+  - m_ParameterName: Damp
+    m_GUID: e3bdbef58d5d7473d87bffcd35096d3f
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &24492446
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: 285e1a75d5d632444a493d431fdb39ac
+  m_EffectName: Attenuation
+  m_MixLevel: 59bb11b1cd1a6c747a1c31f8f6de88d7
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &24500003
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Snapshot
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: a29c5c8a65223f54f8404caff9f09303
+  m_FloatValues:
+    70682520979574d88a1c9348dfedc7cf: 0.5
+    ebe51a30ebfdd4c4abf87aad8fe0813b: 1.01
+    18adc3800208a457a922185bb33e1c61: 93
+    059b5e80e5df444d7a984e2cbb34020f: 7320
+    9a80f6b07fd544b319558ef0de17e8fe: 4255
+    d50ccdb00daa740ebac3b1334205bd64: 0.5
+    33f2f6d0d23b84ea6b88b987d081cacf: 0.5
+    dfc48ad05f5054b048a938467115d5da: 0.4
+    3a624a01501524105ab282d2f0b266c5: 0.665
+    cdbc2821477bc4f9c9a37ddf0cbe6bc4: 9
+    ee6f0451e001a474991b3c085265fba1: 1
+    d650a371e060d4177a012f1d0b1542dd: 13492
+    460a58811961646e1bd9ae55ec4ff823: 1.67
+    f75c03a1228c24e1a814cd9e99292334: 12
+    03a59fe1fd9564e899dba3912959de67: 1.72
+    44d13422127244eb59ba08d3a77f0862: 163
+    8112d732bf0a745178f08746d98448a8: 0.66
+    f8215342e837044aab8274d9a6b83846: 0.33
+    7dd7437264c89435dbca723e63e85dc7: 200
+    1bb474726e0254649a5cc73c1ec50f94: 7000
+    6c8e40a2450b9454ab856d83e880ae93: 0.5
+    409e4ba2dfb1f48cdbd8e57c3b4dfd5c: 0.496
+    bfef53f27f4434701b9b3cf90b89dc2e: 0.5
+    7ed9acf247d6c4cd4b8a953002b730b9: 0.5
+    caf5760395bf7460a98933c97ed61aa0: 1
+    7440d113dab0344bb995d889c6a8e66a: 0.5
+    b09f7913815244daca806343def3556e: 0.37
+    4c6ee933de30947718800672ba098f93: 0
+    59dc855363dbd4318909858d57fc60e7: 0.55
+    ea3a1563ab6e549b4b9d80018d2cd3f7: 40
+    4d5351738f99340a38679c0834499d9c: 1
+    d4063e739125c4950ad20d2592bfe78d: 1
+    1c7299d3a4c9b46c08b8faa5e74a4548: 8000
+    16dd3cd37ac064003999e63272a231a6: 139
+    5505e52448e8142bfa568d58259905ae: 0.659
+    8ce4e724e328a4a0b8cabcda6f5b7c28: 0.5
+    cfbb473463f95456687d4791009df394: 16
+    d3867b4424bb14d43a6ff1524803a7bc: 0.641
+    7f993b546521347bdb03f012bca32a07: 0.357
+    e18f3264c14ed4e0a98d394df1f20883: 0.5
+    ddb21e74d0a2c46f685ca93e5d0788a6: 55
+    274de8944494542bdaa61b79f4899a1c: 0.6
+    a7896a94b2baf46e1b9a08e5f7897be4: 0.5
+    624f22c4297bd463fa69f753aade27d6: 0.5
+    3e273c454b6974afa8272dd560d5bfa4: 384
+    63649d75077794032829b4d40174b6fd: 0.5
+    bfeaf6b53c60347808b701b8ff653b50: 0.44
+    fa0004c59e6034df98c0852168c152ee: 2.7
+    e3bdbef58d5d7473d87bffcd35096d3f: 0
+    1c968366076704b899da2304c39fde1a: 180
+    5c7bb58623af948d1a25d47faa8a66e5: 35
+    0a85ea86a2efb43e7adeb31cc29cfae5: 160
+    cee4869647f0f41be976be14a9f1c392: 0.2
+    88804f96642e547939b1631935ba7709: 150
+    67a2f6e66c5f34102a92c0ef7a3d93d0: 0.73
+    94831be6122904e2395998fb0ecbc856: 3
+    3dc984f6a2f3e4000be8c38650aa0d7f: 3508
+    b930a4f693f53314e89a0fd473a6597f: 1.96
+    182eb7f6bfce74baea7eeddb05248939: 1
+    6e67da0744cef4dbab298e070af84e45: 0.5
+    e7b4af174aebc40c088cd998f79e5d5f: 0
+    e964b367d51d84d5faf0a75553a5bcad: 0.512
+    4b279a678951e42a2992c67b042e12b4: 0.665
+    a34fbc77e883e4b55b41d1531d602452: 55
+    6f34a7b79c15c4df885cc3670aac459d: 0.5
+    d8ffd8b75cd7c4b59af0f54622d8f072: 184
+    307b63f7ddf8e4ad78fef41ece355027: 1
+    91c17f08e803cda4c84cdb4b0062b38a: 0.387
+    24257f18539154c0c93a3c45a88cd7c0: 0.61
+    81aa4028fc69d4143bbdd59ee6077a09: 2556
+    e3caca28637544d1a9e2bfc7c864cf68: 35
+    e9cbde583be324a06bd9da16b674a4ee: 0.2
+    381a3178ed43d47039ae22065e13fe17: 0.5
+    3cb423b89f7224ea68878f28c77a8fdf: 0.5
+    3aa9c4c89b2a246d88537e081cd8706a: 0
+    00c93ed8a8724479c8404be274fe2823: 3
+    08b9cda94354f482d84a4655140b4268: 0.2
+    09bb10b9b7cea4da096721a5b6a6612e: 1
+    e11e51b9e7c94401e9651aa4af67ff55: 7144
+    154120c9e9068438db5efe41132a7412: 0.5
+    81390dc90c0ce422ea9ed878646d08c5: 0.39
+    cc62c08a2fa20435b8cf8802eb98ac0c: 1
+    493542aaab7ba4cda96980dc10b38cde: 0.32
+    be63d2aab38dd4fd9926bfc04fc734cd: 1305
+    69de86ba555f54c8484bcaf5485ce700: 147
+    928b67ba99c6b403bb87c9b1ef595c75: 1
+    27e1e9ba54f791345b231cd8607c0884: 1
+    7e370e0bd2ace42fea1866394ead92ee: 0.5
+    e003064bb4126478795d2e04e04fcc89: 0.2
+    9ffcb65b6c595480b9c5a34fc7adafe5: 0.89
+    ab1f485bf29b34a79be72c54983141a2: 1000
+    a440917b86a8b4345864ad94639b36ae: 0.5
+    2566a17b1add242fd801c65993121a90: 0.26
+    cb8b5f7ba818d4702b130df8f6654806: 40
+    d1f4b88b4641a4d1a8b2c021c36dcd2a: 0.5
+    9863719bf2144034785ffee60013239d: 0.5
+    f035e87c66a81437ea585735addbfb2a: 0.5
+    dc8091ac5194647b4839f40d645bf5a0: 1
+    1661fdecc5115456bab5443504c41e3f: 0.5
+    23e51afc1e1ef494aa6a20f56803f51f: 1
+    ef99521de5da142548e7962fe70756d9: 0.5
+    30879fbd8d0d54d13b73ecf8d4b7883c: 7331
+    8eb2f54e1f0f548e5afc8f21c3f76438: 1
+    4e3b74de48a624cac9c34029e78e6a08: 1.5
+    58ca26de6e723f943a36bf1c64891ca3: 0.535
+    28fa4dde94216d64e93a75080674fb30: -42.6
+    dee04c0f63cf449d88ea85db6908cfbc: 0.23
+    6757772fa67414c02bc6139be9b2a9cc: 1
+    08cc855fa057816469ba749b2a754b63: 12.2
+    aa8cbfcf5af6446c4b73d2358afb8b9a: 0.43
+    8552deff95b1242de900b3e456146ce4: 121
+  m_TransitionOverrides: {}

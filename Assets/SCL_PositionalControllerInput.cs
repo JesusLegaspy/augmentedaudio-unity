@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Globalization;
 using System.Text;
 
@@ -18,6 +16,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		public bool dFlag;
 		public bool mFlag;
 	};
+		
 	
 	//Initialization
 	void Start () {
@@ -55,7 +54,13 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				internalmove = true;
 				cubeArray[i].cFlag = false;		//finished, no longer needs to be created
 				Debug.Log("Success. The ID of the new object is " + i + ".");
-			}
+
+                //script below is for adding sound and getting distCal to work
+                cubeArray[i].cubeObj.tag = "Sound";
+				//plz script does the magic boiiiiz
+				cubeArray [i].cubeObj.AddComponent<plz> ();
+
+            }
 			
 			if(true == cubeArray[i].dFlag) {
 				cubeArray[i].dFlag = false;
