@@ -15,7 +15,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		public bool cFlag;
 		public bool dFlag;
 		public bool mFlag;
-		public objSound sound;
+		public bool soundFlag;
 	};
 		
 	
@@ -23,10 +23,10 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	void Start () {
 		for(int i = 0; i < maxObjects; i++) {
 			cubeArray[i].valid = false;
-			cubeArray[i].cubeObj = null;				//GameObject object that is physically placed in the Unity Engine
-			cubeArray[i].cFlag = false;					//"create" flag for FixedUpdate() method
-			cubeArray[i].dFlag = false;					//"destroy" flag for FixedUpdate() method
-			cubeArray[i].mFlag = false;					//"move" flag for FixedUpdate() method
+			cubeArray[i].cubeObj = null;						//GameObject object that is physically placed in the Unity Engine
+			cubeArray[i].cFlag = false;							//"create" flag for FixedUpdate() method
+			cubeArray[i].dFlag = false;							//"destroy" flag for FixedUpdate() method
+			cubeArray[i].mFlag = false;							//"move" flag for FixedUpdate() method
 		}
 		SCL_IClientSocketHandlerDelegate socketDelegate = this;
 		int maxClients = 1;
@@ -57,8 +57,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				Debug.Log("Success. The ID of the new object is " + i + ".");
 
                 //script below is for adding sound and getting distCal to work
-                cubeArray[i].cubeObj.tag = "Sound";
-				cubeArray [i].cubeObj.AddComponent<objSound> ();
+                cubeArray [i].cubeObj.AddComponent<objSound> ();
 
             }
 			
@@ -79,9 +78,9 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 					Debug.Log("Item " + i + " successfully moved.");
 			}
 			
-			if(true == cubeArray[i].sound.addFlag) {
-				cubeArray[i].sound.refreshSound();
-				cubeArray[i].sound.addFlag = false;
+			if(true == cubeArray[i].soundFlag) {
+				objSound.refreshSound(cubeArray[i].cubeObj);
+				cubeArray[i].soundFlag = false;
 			}
 		}
 	}

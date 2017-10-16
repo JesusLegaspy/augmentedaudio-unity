@@ -2,16 +2,7 @@
 using UnityEngine.Audio;
 
 public class objSound : MonoBehaviour {
-	GameObject obj;
-	public bool addFlag = true;
-
-
-	void Start () {
-		obj = GameObject.FindGameObjectWithTag ("Sound");
-	}
-
-
-	public void refreshSound() {
+	public static void refreshSound(GameObject obj) {
 		obj.AddComponent<SuperpoweredSpatializer> ();
 		AudioSource voice = obj.AddComponent<AudioSource> ();
         AudioMixer master = Resources.Load("spatializerreverb", typeof(AudioMixer)) as AudioMixer;
