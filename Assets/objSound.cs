@@ -3,7 +3,7 @@ using UnityEngine.Audio;
 
 public class objSound : MonoBehaviour {
 	GameObject obj;
-	bool addFlag = true;
+	public bool addFlag = true;
 
 
 	void Start () {
@@ -11,7 +11,7 @@ public class objSound : MonoBehaviour {
 	}
 
 
-	public void addSound(GameObject obj){
+	public void refreshSound() {
 		obj.AddComponent<SuperpoweredSpatializer> ();
 		AudioSource voice = obj.AddComponent<AudioSource> ();
         AudioMixer master = Resources.Load("spatializerreverb", typeof(AudioMixer)) as AudioMixer;
@@ -27,14 +27,5 @@ public class objSound : MonoBehaviour {
 		voice.maxDistance = 150;
 		voice.minDistance = 1;
 		voice.Play();
-	}
-
-	// Update is called once per frame
-	void Update () {
-		if(addFlag){
-			addSound (obj);
-			addFlag = false;
-	
-		}
 	}
 }
