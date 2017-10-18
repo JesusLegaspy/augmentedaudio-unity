@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
 
-public class plz : MonoBehaviour {
+public class objSound : MonoBehaviour {
 	GameObject obj;
 	bool addFlag = true;
 
