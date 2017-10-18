@@ -77,7 +77,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				//  as the user never requested one.
 				if(false == internalmove)
 					Debug.Log("Item " + i + " successfully moved.");
-			}
+			} 
 		}
 	}
 	
