@@ -39,7 +39,7 @@ public class SCL_ClientSocketHandler {
 			StringBuilder dataBuffer = new StringBuilder();
 
 			while (true) {
-				byte [] read_buffer = new byte[256];
+				byte [] read_buffer = new byte[2048];
 				int read_length = this.client.Client.Receive(read_buffer);
 				if(read_length > 0) {
 					dataBuffer.Append(this.encoding.GetString(read_buffer, 0, read_length));
