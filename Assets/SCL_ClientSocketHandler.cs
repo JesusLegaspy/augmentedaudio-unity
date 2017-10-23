@@ -34,6 +34,14 @@ public class SCL_ClientSocketHandler {
 		}
 	}
 	
+	public bool sendStringToClient(String s) {
+		byte[] arr = Encoding.ASCII.GetBytes(s);
+		NetworkStream netStream = this.client.GetStream();
+		netStream.Write(arr, 0, arr.Length);
+		return true;
+	}
+
+
 	public void Run() {
 		try {
 			StringBuilder dataBuffer = new StringBuilder();

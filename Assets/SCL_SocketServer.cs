@@ -42,7 +42,7 @@ public class SCL_SocketServer
 	protected readonly SCL_IClientSocketHandlerDelegate socketDelegate;
 	protected readonly string separatorString;
 	protected readonly Encoding encoding;
-	protected ArrayList clientHandlerThreads;
+	public ArrayList clientHandlerThreads;
 	protected readonly int portNumber;
 	protected readonly IPEndPoint localEndPoint;
 	protected readonly int maxClients;

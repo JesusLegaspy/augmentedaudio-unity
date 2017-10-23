@@ -54,7 +54,13 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				internalmove = true;
 				cubeArray[i].cFlag = false;		//finished, no longer needs to be created
 				Debug.Log("Success. The ID of the new object is " + i + ".");
-
+				//SCL_ClientSocketHandler.sendStringToClient(String.Format("[0]", i));
+				int numConnections = this.socketServer.ClientCount;
+				for(int j = 0; j < numConnections; j++) {
+					SCL_SocketClientThreadHolder CSTH = (SCL_SocketClientThreadHolder) this.socketServer.clientHandlerThreads[j];
+					SCL_ClientSocketHandler CSH = CSTH.Handler;
+					CSH.sendStringToClient(String.Format("New ID: {0}\n\r", i));
+				}
                 //script below is for adding sound and getting distCal to work
                 cubeArray[i].cubeObj.tag = "Sound";
 				//plz script does the magic boiiiiz
