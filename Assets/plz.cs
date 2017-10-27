@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
 
-public class plz : MonoBehaviour {
+public class objSound : MonoBehaviour {
 	GameObject obj;
 	bool addFlag = true;
 
 
 	void Start () {
-		obj = GameObject.FindGameObjectWithTag ("Sound");
+        obj = this.gameObject;//GameObject.FindGameObjectWithTag ("Sound");
 	}
 
 
-	public void addSound(GameObject obj){
+	public void addSound(GameObject cube){
 		obj.AddComponent<SuperpoweredSpatializer> ();
 		AudioSource voice = obj.AddComponent<AudioSource> ();
         AudioMixer master = Resources.Load("spatializerreverb", typeof(AudioMixer)) as AudioMixer;
@@ -34,7 +34,6 @@ public class plz : MonoBehaviour {
 		if(addFlag){
 			addSound (obj);
 			addFlag = false;
-	
 		}
 	}
 }
