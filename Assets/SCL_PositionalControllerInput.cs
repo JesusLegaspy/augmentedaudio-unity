@@ -58,7 +58,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
                 //script below is for adding sound and getting distCal to work
                 cubeArray[i].cubeObj.tag = "Sound";
 				//plz script does the magic boiiiiz
-				cubeArray [i].cubeObj.AddComponent<plz> ();
+				cubeArray [i].cubeObj.AddComponent<objSound> ();
 
             }
 			
@@ -77,7 +77,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				//  as the user never requested one.
 				if(false == internalmove)
 					Debug.Log("Item " + i + " successfully moved.");
-			}
+			} 
 		}
 	}
 	
