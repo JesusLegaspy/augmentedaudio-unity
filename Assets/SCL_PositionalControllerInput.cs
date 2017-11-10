@@ -42,6 +42,8 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	//Periodically executed by Unity. This program uses it to check
 	//  flags to create & destroy objects when needed.
 	void FixedUpdate() {
+		int[] msgReturn = new int[maxObjects];
+		int MRIndex = 0;
 		for(int i = 0; i < maxObjects; i++) {
 			//First check that cubeArray[i] is valid before trying to read from it
 			if(false == cubeArray[i].valid)
@@ -54,18 +56,14 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				internalmove = true;
 				cubeArray[i].cFlag = false;		//finished, no longer needs to be created
 				Debug.Log("Success. The ID of the new object is " + i + ".");
-				//SCL_ClientSocketHandler.sendStringToClient(String.Format("[0]", i));
-				int numConnections = this.socketServer.ClientCount;
-				for(int j = 0; j < numConnections; j++) {
-					SCL_SocketClientThreadHolder CSTH = (SCL_SocketClientThreadHolder) this.socketServer.clientHandlerThreads[j];
-					SCL_ClientSocketHandler CSH = CSTH.Handler;
-					CSH.sendStringToClient(String.Format("New ID: {0}\n\r", i));
-				}
+				
+				msgReturn[MRIndex] = i;			//Add this index to list of indeces to send back to the client
+				MRIndex++;
+				
                 //script below is for adding sound and getting distCal to work
                 cubeArray[i].cubeObj.tag = "Sound";
 				//plz script does the magic boiiiiz
 				cubeArray [i].cubeObj.AddComponent<plz> ();
-
             }
 			
 			if(true == cubeArray[i].dFlag) {
@@ -83,6 +81,22 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				//  as the user never requested one.
 				if(false == internalmove)
 					Debug.Log("Item " + i + " successfully moved.");
+			}
+		}
+		int numConnections = this.socketServer.ClientCount;
+		if(MRIndex != 0) {
+			for(int j = 0; j < numConnections; j++) {
+				SCL_SocketClientThreadHolder CSTH = (SCL_SocketClientThreadHolder) this.socketServer.clientHandlerThreads[j];
+				SCL_ClientSocketHandler CSH = CSTH.Handler;
+				StringBuilder returnMsg = new StringBuilder();
+				returnMsg.Append("New IDs: ");
+				for(int i = 0; i < MRIndex; i++) {
+					returnMsg.Append(i);
+					returnMsg.Append(", ");
+				}
+				returnMsg.Length -= 2;			//remove extra comma and space
+				returnMsg.Append("\n\r");
+				CSH.sendStringToClient(returnMsg.ToString());
 			}
 		}
 	}
