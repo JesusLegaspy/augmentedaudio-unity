@@ -91,7 +91,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				StringBuilder returnMsg = new StringBuilder();
 				returnMsg.Append("New IDs: ");
 				for(int i = 0; i < MRIndex; i++) {
-					returnMsg.Append(i);
+					returnMsg.Append(msgReturn[i]);
 					returnMsg.Append(", ");
 				}
 				returnMsg.Length -= 2;			//remove extra comma and space
