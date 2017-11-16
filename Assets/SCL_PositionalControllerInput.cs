@@ -8,6 +8,9 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	private SCL_SocketServer socketServer;
 	private static myObj[] cubeArray = new myObj[maxObjects];
 	
+	private int invalidCreat;		//flag used to know how many "-1"s (i.e., invalid creations) to return when sending output message on FixedUpdate()
+	private Object invalidCreatLock = new Object();		//lock to prevent race condition on invalidCreat;
+	
 	public struct myObj {
 		public bool valid;
 		public GameObject cubeObj;
@@ -17,6 +20,14 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		public bool mFlag;
 	};
 		
+	// Send string to all clients
+	private void outputMessage(String s) {
+		int numConnections = this.socketServer.ClientCount;
+		for(int j = 0; j < numConnections; j++) {
+			SCL_SocketClientThreadHolder CSTH = (SCL_SocketClientThreadHolder) this.socketServer.clientHandlerThreads[j];
+			CSTH.Handler.sendStringToClient(s);
+		}
+	}
 	
 	//Initialization
 	void Start () {
@@ -83,24 +94,27 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 					Debug.Log("Item " + i + " successfully moved.");
 			}
 		}
-		int numConnections = this.socketServer.ClientCount;
-		if(MRIndex != 0) {
-			for(int j = 0; j < numConnections; j++) {
-				SCL_SocketClientThreadHolder CSTH = (SCL_SocketClientThreadHolder) this.socketServer.clientHandlerThreads[j];
-				SCL_ClientSocketHandler CSH = CSTH.Handler;
-				StringBuilder returnMsg = new StringBuilder();
-				returnMsg.Append("New IDs: ");
-				for(int i = 0; i < MRIndex; i++) {
-					returnMsg.Append(msgReturn[i]);
-					returnMsg.Append(", ");
-				}
-				returnMsg.Length -= 2;			//remove extra comma and space
-				returnMsg.Append("\n\r");
-				CSH.sendStringToClient(returnMsg.ToString());
+		if(MRIndex != 0) {		//if newly created objects need to be reported to the clients
+			StringBuilder returnMsg = new StringBuilder();
+			returnMsg.Append("New IDs: ");
+			for(int i = 0; i < MRIndex; i++) {
+				returnMsg.Append(msgReturn[i]);
+				returnMsg.Append(", ");
 			}
+			int invObjs = 0;
+			lock (invalidCreatLock) {
+				invObjs = invalidCreat;
+				invalidCreat = 0;		//clear, as the invalid objects reported have been taken care of
+			}
+			for(int i = 0; i < invObjs; i++)
+				returnMsg.Append("-1, ");
+			
+			returnMsg.Length -= 2;			//remove extra comma and space
+			returnMsg.Append("\n\r");
+			outputMessage(returnMsg.ToString());
 		}
 	}
-	
+
 	//Executed upon application exit
 	void OnApplicationQuit() {
 		for(int i = 0; i < maxObjects; i++) {
@@ -127,6 +141,9 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		int ID = getUnusedID();
 		if(ID == -1) {
 			Debug.LogError("Limit of maxObjects reached; cannot create object. Aborting");
+			lock (invalidCreatLock) {
+				invalidCreat++;
+			}
 			return;
 		}
 		cubeArray[ID].valid = true;
