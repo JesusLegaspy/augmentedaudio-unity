@@ -9,7 +9,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	private static myObj[] cubeArray = new myObj[maxObjects];
 	
 	private int invalidCreat;		//flag used to know how many "-1"s (i.e., invalid creations) to return when sending output message on FixedUpdate()
-	private Object invalidCreatLock = new Object();		//lock to prevent race condition on invalidCreat;
+	private UnityEngine.Object invalidCreatLock = new UnityEngine.Object();		//lock to prevent race condition on invalidCreat;
 	
 	public struct myObj {
 		public bool valid;
@@ -21,7 +21,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	};
 		
 	// Send string to all clients
-	private void outputMessage(String s) {
+	private void outputMessage(string s) {
 		int numConnections = this.socketServer.ClientCount;
 		for(int j = 0; j < numConnections; j++) {
 			SCL_SocketClientThreadHolder CSTH = (SCL_SocketClientThreadHolder) this.socketServer.clientHandlerThreads[j];
@@ -45,7 +45,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		Encoding encoding = Encoding.UTF8;
 		this.socketServer = new SCL_SocketServer(socketDelegate, maxClients, separatorString, portNumber, encoding);
 		this.socketServer.StartListeningForConnections();
-		Debug.Log (String.Format (
+		Debug.Log (System.String.Format (
 			"Started socket server at {0} on port {1}", 
 			this.socketServer.LocalEndPoint.Address, this.socketServer.PortNumber));
 	}
@@ -54,7 +54,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	//  flags to create & destroy objects when needed.
 	void FixedUpdate() {
 		int[] msgReturn = new int[maxObjects];
-		int MRIndex = 0;
+		int msgReturnLength = 0;
 		for(int i = 0; i < maxObjects; i++) {
 			//First check that cubeArray[i] is valid before trying to read from it
 			if(false == cubeArray[i].valid)
@@ -68,8 +68,8 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				cubeArray[i].cFlag = false;		//finished, no longer needs to be created
 				Debug.Log("Success. The ID of the new object is " + i + ".");
 				
-				msgReturn[MRIndex] = i;			//Add this index to list of indeces to send back to the client
-				MRIndex++;
+				msgReturn[msgReturnLength] = i;			//Add this index to list of indeces to send back to the client
+				msgReturnLength++;
 				
                 //script below is for adding sound and getting distCal to work
                 cubeArray[i].cubeObj.tag = "Sound";
@@ -94,17 +94,22 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 					Debug.Log("Item " + i + " successfully moved.");
 			}
 		}
-		if(MRIndex != 0) {		//if newly created objects need to be reported to the clients
+		
+		//Now send information to user about created objects
+		int invObjs;
+		lock (invalidCreatLock) {
+			invObjs = invalidCreat;
+		}
+		//Debug.Log("Message Return Length: " + msgReturnLength + ", Number of invalid objects: " + invObjs);
+		if(msgReturnLength != 0 || invObjs != 0) {		//if newly created objects need to be reported to the clients
+			lock(invalidCreatLock) {
+				invalidCreat = 0;		//clear, as the invalid objects reported are about to be taken care of
+			}
 			StringBuilder returnMsg = new StringBuilder();
 			returnMsg.Append("New IDs: ");
-			for(int i = 0; i < MRIndex; i++) {
+			for(int i = 0; i < msgReturnLength; i++) {
 				returnMsg.Append(msgReturn[i]);
 				returnMsg.Append(", ");
-			}
-			int invObjs = 0;
-			lock (invalidCreatLock) {
-				invObjs = invalidCreat;
-				invalidCreat = 0;		//clear, as the invalid objects reported have been taken care of
 			}
 			for(int i = 0; i < invObjs; i++)
 				returnMsg.Append("-1, ");
