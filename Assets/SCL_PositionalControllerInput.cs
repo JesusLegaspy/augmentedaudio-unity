@@ -18,6 +18,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		public bool cFlag;
 		public bool dFlag;
 		public bool mFlag;
+		public bool soundFlag;
 	};
 		
 	// Send string to all clients
@@ -33,10 +34,10 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	void Start () {
 		for(int i = 0; i < maxObjects; i++) {
 			cubeArray[i].valid = false;
-			cubeArray[i].cubeObj = null;				//GameObject object that is physically placed in the Unity Engine
-			cubeArray[i].cFlag = false;					//"create" flag for FixedUpdate() method
-			cubeArray[i].dFlag = false;					//"destroy" flag for FixedUpdate() method
-			cubeArray[i].mFlag = false;					//"move" flag for FixedUpdate() method
+			cubeArray[i].cubeObj = null;						//GameObject object that is physically placed in the Unity Engine
+			cubeArray[i].cFlag = false;							//"create" flag for FixedUpdate() method
+			cubeArray[i].dFlag = false;							//"destroy" flag for FixedUpdate() method
+			cubeArray[i].mFlag = false;							//"move" flag for FixedUpdate() method
 		}
 		SCL_IClientSocketHandlerDelegate socketDelegate = this;
 		int maxClients = 1;
@@ -72,9 +73,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				msgReturnLength++;
 				
                 //script below is for adding sound and getting distCal to work
-                cubeArray[i].cubeObj.tag = "Sound";
-				//plz script does the magic boiiiiz
-				cubeArray [i].cubeObj.AddComponent<plz> ();
+                cubeArray [i].cubeObj.AddComponent<objSound> ();
             }
 			
 			if(true == cubeArray[i].dFlag) {
@@ -92,6 +91,11 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				//  as the user never requested one.
 				if(false == internalmove)
 					Debug.Log("Item " + i + " successfully moved.");
+			}
+			
+			if(true == cubeArray[i].soundFlag) {
+				objSound.refreshSound(cubeArray[i].cubeObj);
+				cubeArray[i].soundFlag = false;
 			}
 		}
 		

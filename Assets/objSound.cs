@@ -1,17 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
 
-public class plz : MonoBehaviour {
-	GameObject obj;
-	bool addFlag = true;
-
-
-	void Start () {
-		obj = GameObject.FindGameObjectWithTag ("Sound");
-	}
-
-
-	public void addSound(GameObject obj){
+public class objSound : MonoBehaviour {
+	public static void refreshSound(GameObject obj) {
 		obj.AddComponent<SuperpoweredSpatializer> ();
 		AudioSource voice = obj.AddComponent<AudioSource> ();
         AudioMixer master = Resources.Load("spatializerreverb", typeof(AudioMixer)) as AudioMixer;
@@ -27,14 +18,5 @@ public class plz : MonoBehaviour {
 		voice.maxDistance = 150;
 		voice.minDistance = 1;
 		voice.Play();
-	}
-
-	// Update is called once per frame
-	void Update () {
-		if(addFlag){
-			addSound (obj);
-			addFlag = false;
-	
-		}
 	}
 }
