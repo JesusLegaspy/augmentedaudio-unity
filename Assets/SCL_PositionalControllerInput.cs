@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 
 public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHandlerDelegate {
-	public readonly static int maxObjects = 10;
+	public readonly static int maxObjects = 5;
 	private SCL_SocketServer socketServer;
 	private static myObj[] cubeArray = new myObj[maxObjects];
 	
