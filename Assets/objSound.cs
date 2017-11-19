@@ -2,14 +2,16 @@
 using UnityEngine.Audio;
 
 public class objSound : MonoBehaviour {
-	public static void refreshSound(GameObject obj) {
+	
+	public static void refreshSound(GameObject obj, string audioCue) {
 		obj.AddComponent<SuperpoweredSpatializer> ();
 		AudioSource voice = obj.AddComponent<AudioSource> ();
         AudioMixer master = Resources.Load("spatializerreverb", typeof(AudioMixer)) as AudioMixer;
         voice.outputAudioMixerGroup = master.FindMatchingGroups ("Master") [0];
-		AudioClip speech;
-        speech = Resources.Load("speech", typeof(AudioClip)) as AudioClip;
-        voice.clip = speech;
+		
+		AudioClip cue;
+		cue = Resources.Load((string) audioCue, typeof(AudioClip)) as AudioClip;
+        voice.clip = cue;
 	
 		voice.loop = true;
 		voice.spatialize = true;

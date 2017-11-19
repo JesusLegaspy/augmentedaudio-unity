@@ -2,6 +2,7 @@
 using System;
 using System.Globalization;
 using System.Text;
+using System.Collections.Generic;
 
 public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHandlerDelegate {
 	public readonly static int maxObjects = 5;
@@ -10,6 +11,8 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	
 	private int invalidCreat;		//flag used to know how many "-1"s (i.e., invalid creations) to return when sending output message on FixedUpdate()
 	private UnityEngine.Object invalidCreatLock = new UnityEngine.Object();		//lock to prevent race condition on invalidCreat;
+
+	static Queue<string> audioCues = new Queue<string>(new[] {"bell", "chicken_bock_x", "pacman_dies_y", "speech", "vocal", "whitenoise"});
 	
 	public struct myObj {
 		public bool valid;
@@ -18,7 +21,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 		public bool cFlag;
 		public bool dFlag;
 		public bool mFlag;
-		public bool soundFlag;
+		public string soundName;
 	};
 		
 	// Send string to all clients
@@ -73,12 +76,23 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				msgReturnLength++;
 				
                 //script below is for adding sound and getting distCal to work
-                cubeArray [i].cubeObj.AddComponent<objSound> ();
+				string soundName;
+				if(audioCues.Count != 0) {
+					soundName = audioCues.Dequeue();
+				} else
+					soundName = "speech";		//If we have more objects than audio cues, just assign
+											// the new ones to "speech".
+				cubeArray[i].soundName = soundName;
+                cubeArray[i].cubeObj.AddComponent<objSound>();
+				objSound.refreshSound(cubeArray[i].cubeObj, cubeArray[i].soundName);
             }
 			
 			if(true == cubeArray[i].dFlag) {
 				cubeArray[i].dFlag = false;
 				Destroy(cubeArray[i].cubeObj);
+				
+				audioCues.Enqueue(cubeArray[i].soundName);		//Sound is no longer in use, so retire to the queue
+				
 				cubeArray[i].valid = false;
 				Debug.Log("Item " + i + " successfully destroyed.");
 			}
@@ -91,11 +105,6 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 				//  as the user never requested one.
 				if(false == internalmove)
 					Debug.Log("Item " + i + " successfully moved.");
-			}
-			
-			if(true == cubeArray[i].soundFlag) {
-				objSound.refreshSound(cubeArray[i].cubeObj);
-				cubeArray[i].soundFlag = false;
 			}
 		}
 		
