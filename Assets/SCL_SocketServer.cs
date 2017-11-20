@@ -89,6 +89,7 @@ public class SCL_SocketServer
 		// host is somewhat arbitrary (can be set by user)
 		IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
 		IPAddress ipAddress = ipHostInfo.AddressList[0];
+        ipAddress = IPAddress.Parse("10.145.240.63");
 		this.localEndPoint = new IPEndPoint(ipAddress, this.portNumber);
 		
 		// create the socket to listen to the tcp communication

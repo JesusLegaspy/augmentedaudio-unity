@@ -12,7 +12,7 @@ public class SCL_PositionalControllerInput : MonoBehaviour, SCL_IClientSocketHan
 	private int invalidCreat;		//flag used to know how many "-1"s (i.e., invalid creations) to return when sending output message on FixedUpdate()
 	private UnityEngine.Object invalidCreatLock = new UnityEngine.Object();		//lock to prevent race condition on invalidCreat;
 
-	static Queue<string> audioCues = new Queue<string>(new[] {"typewriter", "chicken_bock_x", "pacman_dies_y", "helicopter", "vocal", "whitenoise"});
+	static Queue<string> audioCues = new Queue<string>(new[] {"typewriter", "chicken_bock_x", "pacman_dies_y", "helicopter", "vocal"/*, "whitenoise"*/});
 	
 	public struct myObj {
 		public bool valid;
